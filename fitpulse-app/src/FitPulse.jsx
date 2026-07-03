@@ -354,7 +354,7 @@ tbody tr:hover{background:var(--s3);cursor:pointer}
 .msg.theirs .msg-bubble{background:var(--s2);border:1px solid var(--border);border-radius:16px 16px 16px 4px;font-weight:400}
 .msg-ts{font-size:11px;color:var(--text3);font-family:'JetBrains Mono',monospace}
 .chat-input-row{display:flex;gap:12px;padding:16px;background:var(--s2);border:1px solid var(--border);border-top:none;border-radius:0 0 var(--r2) var(--r2)}
-.chat-input{flex:1;padding:12px 16px;background:var(--s1);border:1.5px solid var(--border);border-radius:9999px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none}
+.chat-input{flex:1;min-width:0;padding:12px 16px;background:var(--s1);border:1.5px solid var(--border);border-radius:9999px;color:var(--text);font-size:14px;font-family:'Inter',sans-serif;outline:none}
 .chat-input:focus{border-color:var(--lime)}
 
 /* ── PLAN CARD ── */
@@ -398,7 +398,10 @@ tbody tr:hover{background:var(--s3);cursor:pointer}
   .overlay{padding:0}
   .modal-head{padding:20px 20px 0}
   .modal-body{padding:20px}
+  .hide-desktop{display:block;}
+  .hide-mobile{display:none !important;}
 }
+.hide-desktop{display:none;}
 
 /* ── MISC ── */
 .flex-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -445,6 +448,8 @@ tbody tr:hover{background:var(--s3);cursor:pointer}
   .landing-hero{padding:60px 16px}
   .landing-features{grid-template-columns:1fr;padding:0 16px 60px}
   .landing-nav{padding:16px 20px; flex-direction:column; gap:16px}
+  .landing-nav-links{gap:12px; flex-wrap:wrap; justify-content:center}
+  .landing-nav-link{font-size:12px}
   .landing-subtitle{font-size:16px; margin-bottom:40px}
 }
 
@@ -620,7 +625,7 @@ function DietEditorModal({ client, onSave, onClose }) {
         <div className="modal-body">
           <div className="card-title">Meals</div>
           <div style={{ borderRadius: "var(--r)", overflow: "hidden", border: "1px solid var(--border)", marginBottom: 16 }}>
-            <div style={{ display: "grid", gridTemplateColumns: "90px 100px 1fr 70px 60px 32px", gap: 10, padding: "10px 12px", background: "var(--s3)" }}>
+            <div className="hide-mobile" style={{ display: "grid", gridTemplateColumns: "90px 100px 1fr 70px 60px 32px", gap: 10, padding: "10px 12px", background: "var(--s3)" }}>
               {["Time", "Label", "Food Items", "Calories", "Protein", ""].map((h, i) => (
                 <div key={i} style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "var(--text3)" }}>{h}</div>
               ))}
@@ -689,7 +694,7 @@ function DietPlanView({ dietPlan, client, isTrainer, onEdit }) {
       </div>
 
       <div style={{ border: "1px solid var(--border)", borderRadius: "var(--r)", overflow: "hidden" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "90px 100px 1fr 80px 60px", gap: 12, padding: "10px 16px", background: "var(--s3)" }}>
+        <div className="hide-mobile" style={{ display: "grid", gridTemplateColumns: "90px 100px 1fr 80px 60px", gap: 12, padding: "10px 16px", background: "var(--s3)" }}>
           {["Time", "Meal", "Food Items", "Calories", "Protein"].map((h, i) => (
             <div key={i} style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "var(--text3)" }}>{h}</div>
           ))}
@@ -964,7 +969,7 @@ function ClientDetail({ client, trainer, onBack, onUpdateClient, currentUserId, 
             <div className="empty-state"><span className="es-icon">📋</span><p>No tracking entries yet.</p></div>
           ) : (
             <div className="log-grid">
-              <div style={{ display: "grid", gridTemplateColumns: "90px repeat(5,1fr)", gap: 12, padding: "8px 16px" }}>
+              <div className="hide-mobile" style={{ display: "grid", gridTemplateColumns: "90px repeat(5,1fr)", gap: 12, padding: "8px 16px" }}>
                 {["Date", "Weight", "Calories", "Sleep", "Water", "Notes"].map(h => (
                   <div key={h} style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "var(--text3)" }}>{h}</div>
                 ))}
@@ -972,11 +977,11 @@ function ClientDetail({ client, trainer, onBack, onUpdateClient, currentUserId, 
               {[...client.weightLog].reverse().map((l, i) => (
                 <div key={i} className="log-item">
                   <div className="log-date">{l.date}</div>
-                  <div className="log-field"><div className="lf-val">{l.weight} kg</div></div>
-                  <div className="log-field"><div className="lf-val">{l.calories || "—"} kcal</div></div>
-                  <div className="log-field"><div className="lf-val">{l.sleep || "—"} hrs</div></div>
-                  <div className="log-field"><div className="lf-val">{l.water || "—"} L</div></div>
-                  <div className="log-field"><div className="lf-val" style={{ fontSize: 12, color: "var(--text2)" }}>{l.note || "—"}</div></div>
+                  <div className="log-field"><div className="lf-val">{l.weight} kg</div><span className="lf-key hide-desktop">Weight</span></div>
+                  <div className="log-field"><div className="lf-val">{l.calories || "—"} kcal</div><span className="lf-key hide-desktop">Calories</span></div>
+                  <div className="log-field"><div className="lf-val">{l.sleep || "—"} hrs</div><span className="lf-key hide-desktop">Sleep</span></div>
+                  <div className="log-field"><div className="lf-val">{l.water || "—"} L</div><span className="lf-key hide-desktop">Water</span></div>
+                  <div className="log-field"><div className="lf-val" style={{ fontSize: 12, color: "var(--text2)" }}>{l.note || "—"}</div><span className="lf-key hide-desktop">Note</span></div>
                 </div>
               ))}
             </div>
@@ -1372,7 +1377,7 @@ function ClientDashboard({ client, trainer, onUpdateClient, addToast }) {
                 <div className="empty-state"><span className="es-icon">📋</span><p>Start logging your daily metrics.</p><button className="btn btn-primary" style={{ marginTop: 14 }} onClick={() => setShowLogModal(true)}>Add First Entry</button></div>
               ) : (
                 <div className="log-grid">
-                  <div style={{ display: "grid", gridTemplateColumns: "90px repeat(5,1fr)", gap: 12, padding: "8px 16px" }}>
+                  <div className="hide-mobile" style={{ display: "grid", gridTemplateColumns: "90px repeat(5,1fr)", gap: 12, padding: "8px 16px" }}>
                     {["Date", "Weight", "Calories", "Sleep", "Water", "Notes"].map(h => (
                       <div key={h} style={{ fontSize: 10, fontWeight: 700, letterSpacing: "1.5px", textTransform: "uppercase", color: "var(--text3)" }}>{h}</div>
                     ))}
@@ -1380,11 +1385,11 @@ function ClientDashboard({ client, trainer, onUpdateClient, addToast }) {
                   {[...log].reverse().map((l, i) => (
                     <div key={i} className="log-item">
                       <div className="log-date">{l.date}</div>
-                      <div className="log-field"><div className="lf-val">{l.weight} kg</div></div>
-                      <div className="log-field"><div className="lf-val">{l.calories || "—"} kcal</div></div>
-                      <div className="log-field"><div className="lf-val">{l.sleep || "—"} hrs</div></div>
-                      <div className="log-field"><div className="lf-val">{l.water || "—"} L</div></div>
-                      <div className="log-field"><div className="lf-val" style={{ fontSize: 12, color: "var(--text2)" }}>{l.note || "—"}</div></div>
+                      <div className="log-field"><div className="lf-val">{l.weight} kg</div><span className="lf-key hide-desktop">Weight</span></div>
+                      <div className="log-field"><div className="lf-val">{l.calories || "—"} kcal</div><span className="lf-key hide-desktop">Calories</span></div>
+                      <div className="log-field"><div className="lf-val">{l.sleep || "—"} hrs</div><span className="lf-key hide-desktop">Sleep</span></div>
+                      <div className="log-field"><div className="lf-val">{l.water || "—"} L</div><span className="lf-key hide-desktop">Water</span></div>
+                      <div className="log-field"><div className="lf-val" style={{ fontSize: 12, color: "var(--text2)" }}>{l.note || "—"}</div><span className="lf-key hide-desktop">Note</span></div>
                     </div>
                   ))}
                 </div>
